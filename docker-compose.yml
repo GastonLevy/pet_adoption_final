@@ -2,14 +2,22 @@ services:
 
   app:
     build: .
-    container_name: symfony_app
-    ports:
-      - "8000:80"
+    container_name: pet_adoption_app
+    restart: unless-stopped
     volumes:
       - ./app:/var/www/html/app
       - symfony_cache:/var/www/html/app/var/cache
     depends_on:
       - db
+    networks:
+      - web
+      - pet_adoption_internal
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.pet-adoption.rule=Host(`petcenter.gastonlevy.com`)"
+      - "traefik.http.routers.pet-adoption.entrypoints=websecure"
+      - "traefik.http.routers.pet-adoption.tls.certresolver=le"
+      - "traefik.http.services.pet-adoption.loadbalancer.server.port=80"
     command: >
       bash -c "
       cd /var/www/html/app &&
@@ -25,29 +33,36 @@ services:
 
   db:
     image: mysql:8.0
-    container_name: symfony_db_petclinic
+    container_name: pet_adoption_db
     restart: unless-stopped
     environment:
       MYSQL_DATABASE: symfony
       MYSQL_USER: symfony
       MYSQL_PASSWORD: symfony
       MYSQL_ROOT_PASSWORD: root
-    ports:
-      - "3306:3306"
     volumes:
       - db_data:/var/lib/mysql
+    networks:
+      - pet_adoption_internal
 
   phpmyadmin:
     image: phpmyadmin:latest
-    container_name: symfony_phpmyadmin
-    ports:
-      - "8080:80"
+    container_name: pet_adoption_phpmyadmin
+    restart: unless-stopped
     environment:
       PMA_HOST: db
       MYSQL_ROOT_PASSWORD: root
     depends_on:
       - db
+    networks:
+      - pet_adoption_internal
 
 volumes:
   db_data:
   symfony_cache:
+
+networks:
+  web:
+    external: true
+
+  pet_adoption_internal:
