@@ -1,3 +1,43 @@
 body {
-    background-color: skyblue;
+    margin: 0;
+    background: #f8fafc;
+    color: #111827;
+}
+
+.page-hero {
+    padding: 64px 0 48px;
+    background: linear-gradient(135deg, #f6fbf8 0%, #eef8f3 100%);
+    margin-bottom: 48px;
+}
+
+.content-card {
+    background: #ffffff;
+    border: 1px solid #e6eee9;
+    border-radius: 18px;
+    box-shadow: 0 12px 30px rgba(17, 24, 39, 0.08);
+}
+
+.pet-card {
+    overflow: hidden;
+    height: 100%;
+}
+
+.pet-placeholder {
+    height: 160px;
+    background: #eef8f3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #6dbf9e;
+    font-size: 42px;
+}
+
+.badge-soft {
+    background: #e8f6ef;
+    color: #57aa88;
+    border: 1px solid #cfeadc;
+}
+
+main.container {
+    padding-bottom: 32px;
 }
